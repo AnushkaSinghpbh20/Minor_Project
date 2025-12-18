@@ -1,0 +1,14 @@
+[2025-12-14 06:30:12] TrainingSystem.INFO: Logger initialized successfully 
+[2025-12-14 06:30:12] TrainingSystem.INFO: Upload page accessed 
+[2025-12-14 06:30:22] TrainingSystem.INFO: Logger initialized successfully 
+[2025-12-14 06:30:22] TrainingSystem.INFO: Upload page accessed 
+[2025-12-14 06:30:47] TrainingSystem.INFO: Logger initialized successfully 
+[2025-12-14 06:30:47] TrainingSystem.INFO: CSV processing started 
+[2025-12-14 06:30:47] TrainingSystem.ERROR: Error during CSV processing {"error":"CSV file not found"}
+[2025-12-14 06:30:48] TrainingSystem.INFO: Logger initialized successfully 
+[2025-12-14 06:30:48] TrainingSystem.INFO: Upload page accessed 
+[2025-12-14 06:30:49] TrainingSystem.INFO: Logger initialized successfully 
+[2025-12-14 06:30:49] TrainingSystem.INFO: Data move initiated 
+[2025-12-14 06:30:49] TrainingSystem.INFO: Training data moved successfully {"rows_moved":120}
+[2025-12-14 06:30:53] TrainingSystem.INFO: Logger initialized successfully 
+[2025-12-14 06:30:53] TrainingSystem.INFO: Upload page accessed 
