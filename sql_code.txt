@@ -1,0 +1,192 @@
+CREATE TABLE company_info (
+  company_id INT(11) NOT NULL AUTO_INCREMENT,
+  company_name VARCHAR(200) NOT NULL,
+  website VARCHAR(255) DEFAULT NULL,
+  logo VARCHAR(255) DEFAULT NULL,
+  location VARCHAR(200) DEFAULT NULL,
+  PRIMARY KEY (company_id)
+);
+
+CREATE TABLE training_tech (
+  tech_id INT(11) NOT NULL AUTO_INCREMENT,
+  technology_name VARCHAR(100) UNIQUE DEFAULT NULL,
+  PRIMARY KEY (tech_id)
+);
+
+CREATE TABLE trainer_dts (
+  trainer_id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) UNIQUE DEFAULT NULL,
+  PRIMARY KEY (trainer_id)
+);
+
+CREATE TABLE file_info (
+  file_id INT(11) NOT NULL AUTO_INCREMENT,
+  file_name VARCHAR(255) NOT NULL,
+  session_year VARCHAR(10) NOT NULL,
+  status ENUM('pending','done','error','deleted','moved') DEFAULT 'pending',
+  uploaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (file_id)
+);
+
+CREATE TABLE training_dts (
+  survey_id INT(11) NOT NULL AUTO_INCREMENT,
+  file_id INT(11) DEFAULT NULL,
+  timestamp DATETIME DEFAULT NULL,
+  email_id VARCHAR(100) DEFAULT NULL,
+  enroll_no VARCHAR(50) DEFAULT NULL,
+  name VARCHAR(100) DEFAULT NULL,
+  branch VARCHAR(50) DEFAULT NULL,
+  session VARCHAR(50) DEFAULT NULL,
+  company_id INT(11) DEFAULT NULL,
+  project_name VARCHAR(100) DEFAULT NULL,
+  start_dt DATE DEFAULT NULL,
+  end_dt DATE DEFAULT NULL,
+  location VARCHAR(100) DEFAULT NULL,
+  fees DECIMAL(10,2) DEFAULT NULL,
+  training_mode VARCHAR(50) DEFAULT NULL,
+  overall_exp VARCHAR(200) DEFAULT NULL,
+  remark TEXT DEFAULT NULL,
+  PRIMARY KEY (survey_id),
+  FOREIGN KEY (company_id) REFERENCES company_info(company_id),
+  FOREIGN KEY (file_id) REFERENCES file_info(file_id) ON DELETE CASCADE
+);
+
+CREATE TABLE file_log (
+  log_id INT(11) NOT NULL AUTO_INCREMENT,
+  file_id INT(11) NOT NULL,
+  session_year VARCHAR(10) NOT NULL,
+  remarks TEXT DEFAULT NULL,
+  log_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (log_id),
+  FOREIGN KEY (file_id) REFERENCES file_info(file_id) ON DELETE CASCADE
+);
+
+CREATE TABLE comp_feedback (
+  feedback_id INT(11) NOT NULL AUTO_INCREMENT,
+  survey_id INT(11) DEFAULT NULL,
+  company_id INT(11) DEFAULT NULL,
+  communication VARCHAR(50) DEFAULT NULL,
+  infra VARCHAR(50) DEFAULT NULL,
+  activity VARCHAR(50) DEFAULT NULL,
+  overall_fdb VARCHAR(50) DEFAULT NULL,
+  remark TEXT DEFAULT NULL,
+  proj_status VARCHAR(100) DEFAULT NULL,
+  PRIMARY KEY (feedback_id),
+  FOREIGN KEY (survey_id) REFERENCES training_dts(survey_id),
+  FOREIGN KEY (company_id) REFERENCES company_info(company_id)
+);
+
+CREATE TABLE other_feedback (
+  feedback_id INT(11) NOT NULL AUTO_INCREMENT,
+  survey_id INT(11) DEFAULT NULL,
+  location VARCHAR(100) DEFAULT NULL,
+  accommodation VARCHAR(100) DEFAULT NULL,
+  fooding VARCHAR(100) DEFAULT NULL,
+  PRIMARY KEY (feedback_id),
+  FOREIGN KEY (survey_id) REFERENCES training_dts(survey_id)
+);
+
+CREATE TABLE student_tech_map (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  survey_id INT(11) DEFAULT NULL,
+  tech_id INT(11) DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (survey_id) REFERENCES training_dts(survey_id),
+  FOREIGN KEY (tech_id) REFERENCES training_tech(tech_id)
+);
+
+CREATE TABLE student_trainer_map (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  survey_id INT(11) DEFAULT NULL,
+  trainer_id INT(11) DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (survey_id) REFERENCES training_dts(survey_id),
+  FOREIGN KEY (trainer_id) REFERENCES trainer_dts(trainer_id)
+);
+
+CREATE TABLE trainer_feedback (
+  feedback_id INT(11) NOT NULL AUTO_INCREMENT,
+  survey_id INT(11) DEFAULT NULL,
+  trainer_id INT(11) DEFAULT NULL,
+  company_id INT(11) DEFAULT NULL,
+  teaching VARCHAR(50) DEFAULT NULL,
+  knowledge VARCHAR(50) DEFAULT NULL,
+  overall_fdb VARCHAR(50) DEFAULT NULL,
+  remark TEXT DEFAULT NULL,
+  PRIMARY KEY (feedback_id),
+  FOREIGN KEY (survey_id) REFERENCES training_dts(survey_id),
+  FOREIGN KEY (trainer_id) REFERENCES trainer_dts(trainer_id),
+  FOREIGN KEY (company_id) REFERENCES company_info(company_id)
+);
+
+CREATE TABLE locations (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  city VARCHAR(100) DEFAULT NULL,
+  state VARCHAR(100) DEFAULT NULL,
+  country VARCHAR(100) DEFAULT 'India',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE staging_table (
+  survey_id INT(11) NOT NULL AUTO_INCREMENT,
+  file_id INT(11) NOT NULL,
+  timestamp_col VARCHAR(100) DEFAULT NULL,
+  email_address VARCHAR(255) DEFAULT NULL,
+  score VARCHAR(50) DEFAULT NULL,
+  enrollment_no VARCHAR(100) DEFAULT NULL,
+  name VARCHAR(255) DEFAULT NULL,
+  branch VARCHAR(100) DEFAULT NULL,
+  current_year VARCHAR(100) DEFAULT NULL,
+  company_name VARCHAR(255) DEFAULT NULL,
+  technology TEXT DEFAULT NULL,
+  project_name VARCHAR(255) DEFAULT NULL,
+  start_date VARCHAR(100) DEFAULT NULL,
+  end_date VARCHAR(100) DEFAULT NULL,
+  trainer_name VARCHAR(255) DEFAULT NULL,
+  location VARCHAR(255) DEFAULT NULL,
+  fees_submitted VARCHAR(100) DEFAULT NULL,
+  training_mode VARCHAR(100) DEFAULT NULL,
+  communication TEXT DEFAULT NULL,
+  infrastructure TEXT DEFAULT NULL,
+  extra_activities TEXT DEFAULT NULL,
+  overall_company_exp VARCHAR(100) DEFAULT NULL,
+  remark_company TEXT DEFAULT NULL,
+  trainer_teaching_style TEXT DEFAULT NULL,
+  trainer_knowledge TEXT DEFAULT NULL,
+  project_status VARCHAR(255) DEFAULT NULL,
+  trainer_classroom_exp VARCHAR(255) DEFAULT NULL,
+  remark_trainer TEXT DEFAULT NULL,
+  location_status VARCHAR(255) DEFAULT NULL,
+  accomodation TEXT DEFAULT NULL,
+  food_facility TEXT DEFAULT NULL,
+  overall_training_exp VARCHAR(255) DEFAULT NULL,
+  remark_overall TEXT DEFAULT NULL,
+  uploaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  move_status ENUM('pending','moved','error') DEFAULT 'pending',
+  PRIMARY KEY (survey_id),
+  FOREIGN KEY (file_id) REFERENCES file_info(file_id) ON DELETE CASCADE
+);
+
+-------------------------------------------------------------
+company_info insert code --------
+
+
+INSERT INTO `company_info` (`company_id`, `company_name`, `website`, `logo`, `location`) VALUES
+(1, 'Softpro India', 'trainingatsoftpro.com', 'spilogo-1.png', 'lucknow'),
+(2, 'Synapsweb Pvt Ltd', 'synapsweb.org', 'synapsweb.jpg', 'Lucknow'),
+(3, 'Techpile Technology Pvt Ltd', 'techpile.in', 'techpile.png', 'Lucknow'),
+(4, 'DigiCoders Technologies Pvt Ltd', 'digicoders.in', 'digicoder.jpg', 'Lucknow'),
+(5, 'Kamadgiri Software Solutions', 'mykss.in', 'kss.jpg', 'Chitrakoot'),
+(6, 'Arcane Programming Infotech', 'apinfotech.org', 'Arcane.jpg', 'Lucknow'),
+(7, 'Aditya Birla Management Corporation Pvt.Ltd.', 'www.adityabirla.com', 'adityabirla.jpg', 'Renukoot Sonbhadra'),
+(8, 'Hindustan Aeronautics Limited', 'hal-india.co.in', 'OIP.jpg', 'Amethi'),
+(9, 'Promosys Technology Pvt Ltd', 'www.promosystech.com', 'Promosys-Technology-Logo-1.jpg', 'Lucknow'),
+(10, 'Mecatredz Technology Pvt Ltd Lucknow', 'mtechnologies.org', 'mecatredz.jpg', 'Lucknow'),
+(11, 'Sofcon India Pvt. Ltd.', 'sofcontraining.com', 'OIP (3).jpg', 'Delhi'),
+(12, 'APSD Innovation Infotech Pvt. Ltd.', 'apsdinnovationinfotech.in', 'apsd.jpg', 'Lucknow'),
+(13, 'Ekana Technologies', 'ekanatechnologies.in', 'Ekana Logo (2).png', 'Lucknow'),
+(14, 'Maurya Technical Pvt. Ltd.', 'mauryatechnical.in', '', 'lucknow'),
+(15, 'Acs', 'acstechconsulting.in', 'acs.jpg', 'Noida'),
+(16, 'Taxtron Technologies Pvt. Ltd.', 'taxtrontechnologies.com', 'taxtron.jpg', 'Lucknow');
